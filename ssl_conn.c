@@ -10,9 +10,17 @@ typedef struct ssl_conn_impl {
 
 
 static void
-ssl_method (int x)
+ssl_method (ssl_conn_t *this, int x)
 {
-    puts("En SSL method");
+    printf("En SSL method, type is %d\n", this->super.type);
+}
+
+static int
+ssl_read(ssl_conn_t *this, void *ctx)
+{
+    printf("SSL read, type is %d\n",
+        this->super.type);
+    return 0;
 }
 
 static void
@@ -23,10 +31,9 @@ ssl_conn_bind(ssl_conn_t *ssl_conn)
 int ssl_conn_init(conn_t *conn, void *ctx)
 {
     ssl_conn_t *ssl_conn = (ssl_conn_t*)conn;
-    // need to call super_init ssl_conn->super
     puts("En ssl_con_init");
     ssl_conn_bind(ssl_conn);
-    //strcpy(ssl_conn->supe)
     ssl_conn->super.type = 2;
+    ssl_conn->super.read = (con_func)&ssl_read;
     return 0;
 }

@@ -3,9 +3,13 @@
 
 typedef struct conn conn_t;
 
+
+typedef int (*con_func)(conn_t *this, void *ctx);
+
 struct conn {
     struct conn_impl *impl;
-    int (*read)(void *ctx);
+    con_func read;
+    con_func write;
     int type;
 };
 
